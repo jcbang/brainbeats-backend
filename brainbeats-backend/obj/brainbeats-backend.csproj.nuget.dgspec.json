@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Github\\brainbeats-backend\\brainbeats-backend\\brainbeats-backend\\brainbeats-backend.csproj": {}
+    "C:\\Github\\brainbeats-backend\\brainbeats-backend\\brainbeats-backend.csproj": {}
   },
   "projects": {
-    "C:\\Github\\brainbeats-backend\\brainbeats-backend\\brainbeats-backend\\brainbeats-backend.csproj": {
+    "C:\\Github\\brainbeats-backend\\brainbeats-backend\\brainbeats-backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Github\\brainbeats-backend\\brainbeats-backend\\brainbeats-backend\\brainbeats-backend.csproj",
+        "projectUniqueName": "C:\\Github\\brainbeats-backend\\brainbeats-backend\\brainbeats-backend.csproj",
         "projectName": "brainbeats-backend",
-        "projectPath": "C:\\Github\\brainbeats-backend\\brainbeats-backend\\brainbeats-backend\\brainbeats-backend.csproj",
+        "projectPath": "C:\\Github\\brainbeats-backend\\brainbeats-backend\\brainbeats-backend.csproj",
         "packagesPath": "C:\\Users\\Ainov\\.nuget\\packages\\",
-        "outputPath": "C:\\Github\\brainbeats-backend\\brainbeats-backend\\brainbeats-backend\\obj\\",
+        "outputPath": "C:\\Github\\brainbeats-backend\\brainbeats-backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Ainov\\AppData\\Roaming\\NuGet\\NuGet.Config",
