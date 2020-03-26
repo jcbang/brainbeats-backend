@@ -1,30 +1,28 @@
-﻿namespace brainbeats_backend.Controllers
-{
-public class User
-{
+﻿namespace brainbeats_backend.Controllers {
+  public class User {
     public string id {
-        get;
-        set;
+      get;
+      set;
     }
     public string email {
-        get;
-        set;
+      get;
+      set;
     }
     public string firstName {
-        get;
-        set;
+      get;
+      set;
     }
     public string lastName {
-        get;
-        set;
+      get;
+      set;
     }
-    public string [] savedBeats {
-        get;
-        set;
+    public string[] savedBeats {
+      get;
+      set;
     }
     public string[] savedPlaylists {
-        get;
-        set;
+      get;
+      set;
     }
-}
+  }
 }
