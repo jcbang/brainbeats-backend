@@ -11,8 +11,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace brainbeats_backend.Controllers
 {
-	// Path: api/user
-	[Route("api/[controller]")]
+    // Path: api/user
+    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -32,10 +32,12 @@ namespace brainbeats_backend.Controllers
 
         [Route("register")]
         [HttpPost]
-        public async Task<IActionResult> RegisterUser(User user)
+        public async Task<IActionResult>
+        RegisterUser(User user)
         {
             // Verify the request is well formed
-            if (user.firstName == null || user.lastName == null || user.email == null)
+            if (user.firstName == null || user.lastName == null ||
+                user.email == null)
             {
                 return BadRequest("Malformed Request");
             }
@@ -44,9 +46,11 @@ namespace brainbeats_backend.Controllers
             user.id = Guid.NewGuid().ToString();
 
             string queryString = "SELECT * FROM u WHERE u.email = @email";
-            QueryDefinition queryDefinition = new QueryDefinition(queryString).WithParameter("@email", user.email);
+            QueryDefinition queryDefinition =
+                new QueryDefinition(queryString).WithParameter("@email", user.email);
 
-            FeedIterator<User> feedIterator = db.GetContainer("Users").GetItemQueryIterator<User>(queryDefinition);
+            FeedIterator<User> feedIterator =
+                db.GetContainer("Users").GetItemQueryIterator<User>(queryDefinition);
 
             // Check to see if this email already exists
             while (feedIterator.HasMoreResults)
@@ -58,7 +62,8 @@ namespace brainbeats_backend.Controllers
                 }
             }
 
-            ItemResponse<User> res = await db.GetContainer("Users").CreateItemAsync(user, new PartitionKey(user.email));
+            ItemResponse<User> res = await db.GetContainer("Users").CreateItemAsync(
+                user, new PartitionKey(user.email));
 
             if (res.StatusCode == HttpStatusCode.Created)
                 return Ok();
