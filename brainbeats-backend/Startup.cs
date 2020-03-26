@@ -26,6 +26,14 @@ namespace brainbeats_backend
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
+			services.AddCors(options =>
+			{
+				options.AddPolicy("Allow-All",
+					builder =>
+					{
+						builder.AllowAnyOrigin();
+					});
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,12 +48,15 @@ namespace brainbeats_backend
 
 			app.UseRouting();
 
+			app.UseCors();
+
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapControllers();
+				endpoints.MapControllers().RequireCors("Allow-All");
 			});
+
 		}
 	}
 }
