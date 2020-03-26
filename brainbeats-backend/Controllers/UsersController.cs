@@ -17,16 +17,12 @@ namespace brainbeats_backend.Controllers
     public class UsersController : ControllerBase
     {
         private readonly Database db;
-        private readonly IConfiguration Configuration;
 
         public UsersController(IConfiguration configuration)
         {
-            // Initialize Configuration File
-            Configuration = configuration;
-
             // Initialize Database
-            string endpoint = Configuration["Database:Endpoint"];
-            string key = Configuration["Database:Key"];
+            string endpoint = configuration["Database:Endpoint"];
+            string key = configuration["Database:Key"];
             db = new CosmosClient(endpoint, key).GetDatabase("BrainBeats");
         }
 
@@ -66,9 +62,13 @@ namespace brainbeats_backend.Controllers
                 user, new PartitionKey(user.email));
 
             if (res.StatusCode == HttpStatusCode.Created)
+            {
                 return Ok();
+            }
             else
+            {
                 return BadRequest("Something went wrong");
+            }
         }
     }
 }
