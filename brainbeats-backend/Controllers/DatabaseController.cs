@@ -28,9 +28,10 @@ namespace brainbeats_backend.Controllers
         public async Task<IActionResult> CreateDatabase()
         {
             // Initialize Database
+            string env = Configuration["Environment"];
             string dbName = Configuration["Database:DatabaseName"];
-            string endpoint = Configuration["Database:Endpoint"];
-            string key = Configuration["Database:Key"];
+            string endpoint = Configuration["Database:" + env + ":Endpoint"];
+            string key = Configuration["Database:" + env + ":Key"];
 
             try
             {
