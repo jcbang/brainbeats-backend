@@ -19,22 +19,6 @@ namespace brainbeats_backend
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
-            // Initialize Database
-            string dbName = Configuration["Database:DatabaseName"];
-            string endpoint = Configuration["Database:Endpoint"];
-            string key = Configuration["Database:Key"];
-
-            // Create Database if it does not yet exist
-            CosmosClient client = new CosmosClient(endpoint, key);
-            client.CreateDatabaseIfNotExistsAsync(dbName).Wait();
-
-            // Create Containers if they do not yet exist
-            Database db = client.GetDatabase(dbName);
-            db.CreateContainerIfNotExistsAsync("Users", "/email").Wait();
-            db.CreateContainerIfNotExistsAsync("Beats", "/id").Wait();
-            db.CreateContainerIfNotExistsAsync("Playlists", "/id").Wait();
-            db.CreateContainerIfNotExistsAsync("Samples", "/id").Wait();
         }
 
         public IConfiguration Configuration { get; }
@@ -65,7 +49,7 @@ namespace brainbeats_backend
 
             app.UseCors();
 
-            app.UseAuthorization();
+            // app.UseAuthorization();
 
             app.UseEndpoints(
                 endpoints => { endpoints.MapControllers().RequireCors("Allow-All"); });

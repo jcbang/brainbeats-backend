@@ -20,11 +20,7 @@ namespace brainbeats_backend.Controllers
 
         public UsersController(IConfiguration configuration)
         {
-            // Initialize Database
-            string env = configuration["Environment"];
-            string endpoint = configuration["Database:" + env + ":Endpoint"];
-            string key = configuration["Database:" + env + ":Key"];
-            db = new CosmosClient(endpoint, key).GetDatabase("BrainBeats");
+            db = new DatabaseContext(configuration).db;
         }
 
         [Route("register")]
