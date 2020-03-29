@@ -11,61 +11,61 @@ using Microsoft.Extensions.Configuration;
 
 namespace brainbeats_backend.Controllers
 {
-    // Path: api/user
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UsersController : ControllerBase
-    {
-        private readonly Database db;
+// Path: api/user
+[Route("api/[controller]")]
+[ApiController]
+public class UsersController : ControllerBase
+{
+    private readonly Database db;
 
-        public UsersController(IConfiguration configuration)
+    public UsersController(IConfiguration configuration)
+    {
+        db = new DatabaseContext(configuration).db;
+    }
+
+    [Route("register")]
+    [HttpPost]
+    public async Task<IActionResult>
+    RegisterUser(User user)
+    {
+        // Verify the request is well formed
+        if (user.firstName == null || user.lastName == null ||
+                user.email == null)
         {
-            db = new DatabaseContext(configuration).db;
+            return BadRequest("Malformed Request");
         }
 
-        [Route("register")]
-        [HttpPost]
-        public async Task<IActionResult>
-        RegisterUser(User user)
+        // Generate a new unique primary key
+        user.id = Guid.NewGuid().ToString();
+
+        string queryString = "SELECT * FROM u WHERE u.email = @email";
+        QueryDefinition queryDefinition =
+            new QueryDefinition(queryString).WithParameter("@email", user.email);
+
+        FeedIterator<User> feedIterator =
+            db.GetContainer("Users").GetItemQueryIterator<User>(queryDefinition);
+
+        // Check to see if this email already exists
+        while (feedIterator.HasMoreResults)
         {
-            // Verify the request is well formed
-            if (user.firstName == null || user.lastName == null ||
-                user.email == null)
+            FeedResponse<User> response = await feedIterator.ReadNextAsync();
+            if (response.Count > 0)
             {
-                return BadRequest("Malformed Request");
+                return BadRequest("Email already in use");
             }
+        }
 
-            // Generate a new unique primary key
-            user.id = Guid.NewGuid().ToString();
+        ItemResponse<User> res = await db.GetContainer("Users").CreateItemAsync(
+                                     user, new PartitionKey(user.email));
 
-            string queryString = "SELECT * FROM u WHERE u.email = @email";
-            QueryDefinition queryDefinition =
-                new QueryDefinition(queryString).WithParameter("@email", user.email);
-
-            FeedIterator<User> feedIterator =
-                db.GetContainer("Users").GetItemQueryIterator<User>(queryDefinition);
-
-            // Check to see if this email already exists
-            while (feedIterator.HasMoreResults)
-            {
-                FeedResponse<User> response = await feedIterator.ReadNextAsync();
-                if (response.Count > 0)
-                {
-                    return BadRequest("Email already in use");
-                }
-            }
-
-            ItemResponse<User> res = await db.GetContainer("Users").CreateItemAsync(
-                user, new PartitionKey(user.email));
-
-            if (res.StatusCode == HttpStatusCode.Created)
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest("Something went wrong");
-            }
+        if (res.StatusCode == HttpStatusCode.Created)
+        {
+            return Ok();
+        }
+        else
+        {
+            return BadRequest("Something went wrong");
         }
     }
+}
 }
