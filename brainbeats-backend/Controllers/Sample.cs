@@ -25,7 +25,7 @@ namespace brainbeats_backend.Controllers
 			set;
 		}
 
-		public Boolean isPrivate
+		public bool? isPrivate
 		{
 			get;
 			set;
